@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Foundation
 
 struct ContentView: View {
     let units: [UnitLength] = [.meters, .kilometers, .centimeters, .millimeters, .inches, .feet]
@@ -15,6 +14,7 @@ struct ContentView: View {
     @State private var firstValue: Double? = nil
     @State private var secondMetric: UnitLength = .centimeters
     @State private var resultText: String = ""
+    @State private var isCalculated = false
     
     // Computed property for conversion
     var convertedValue: Double {
@@ -49,8 +49,16 @@ struct ContentView: View {
                     
                     // Result section
                     Section {
-                        Button("Calculate") {
-                            resultText = "\(convertedValue.formatted()) \(secondMetric.symbol)"
+                        Button(isCalculated ? "Reset" : "Convert"){
+                            if isCalculated {
+                                firstValue = nil
+                                resultText = ""
+                                isCalculated = false
+                            }
+                            if !isCalculated && firstValue != nil{
+                                resultText = "\(convertedValue.formatted()) \(secondMetric.symbol)"
+                                isCalculated = true
+                            }
                         }
                         
                         if !resultText.isEmpty {
